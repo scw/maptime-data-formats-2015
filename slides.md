@@ -20,7 +20,7 @@ Job
 
  - Work at <a href="https://www.esri.com">Esri</a> on GIS software for scientific applications
  - Python and R
- - Commercial software + FOSS == ???
+ - GIS company since 1969, makes things like ArcGIS
 
 I've got plenty of data types, thanks
 =====================================
@@ -39,13 +39,13 @@ Good Ol' CSV, Nothing Beats CSV
 Comma Separated Values
 
     name, type, latitude, longitude
-    BU Bridge, bridge, 49.353, -71.1106
+    BU Bridge, bridge, 42.353, -71.1106
     Prudential Tower, skyscraper, 42.347, -71.082
     'That place where we measured 108.6" of snow', airport, 42.3605, -71.006638
 
 . . .
 
-- A simple tabular structure to store data -- spreadsheet, but without the cruft
+- A simple tabular structure to store data &mdash; spreadsheet, without the cruft
 - Can upload this data to web mapping sites, or use with something like [GDAL](https://www.gdal.org) to convert it to other formats.
 
 GDAL Interlude
@@ -68,9 +68,12 @@ Convert Our CSV
     # ogr2ogr is confusingly <OUTPUT NAME> <INPUT NAME>
     ogr2ogr -f "GeoJSON" locations.geojson locations.csv
 
-...
+ {data-background="images/bad-geojson.png"}
+===============
 
-(World's tiniest trumpet) -- doesn't work. Why? This 'projection' thing. Which columns are our spatial data
+<p style="color: black">
+*World's tiniest trumpet* &mdash; doesn't work. Why? GDAL wants to know: Which columns are our spatial data? How are they registered to the surface of the earth?
+</p>
 
 Convert Our CSV
 ===============
@@ -85,53 +88,177 @@ Convert Our CSV
     </OGRVRTLayer>
 </OGRVRTDataSource>
 ```
- 
 
-What to Know
-============
+. . .
 
-Mapping is 'hard' but don't need to know all the details
+Let's try that again:
 
-[How much math does a GIS analyst need to know?](http://gis.stackexchange.com/questions/6535/how-much-math-does-a-gis-analyst-need-to-know/6549#6549)
- - trigonometry
- - differential geometry
- - topology
- - calculus
- - numerical analysis
- - computer science
- - geometry
- - statistics
+    ogr2ogr -f "GeoJSON" locations.geojson locations.csv
+
+[Results](https://github.com/scw/maptime-data-formats-2015/blob/master/data/locations.geojson)
+
+CSV to GeoJSON
+==============
+
+Simpler ways:
+
+ - [CSV to GeoJSON](http://togeojson.com/)
+ - [GeoJSON.io](https://geojson.io)
+
+So what's all this XML? I thought we were just making a point?
+
+ - GDAL wants to know where to put the data (shh, *projections*)
+ - It also knows how to handle higher order data -- data that doesn't fit as well into our simple column model that works fine for points.
+
+Spatial Data Formats
+====================
+
+Want data _formats_ that let us store geometric information. We have an attribute model, like the CSV, but want an additional "entity" model to store the geographic information.
+
+ - 0D: Point
+ - 1D: Line
+ - 2D: Area
+ - 3D: Solid
+ - 4D: Space-time
+ - [With images](images/entity-models.png)
+
+. . .
+
+ - Can't easily cram these into a tabular structure
+ - 'Vector' data
+
+Bigger Than Spatial
+===================
+
+<img src="images/db-query.jpg" style="border: none" />
+
+Source: [Computational Geometry: Algorithms and Applications](http://www.springer.com/computer/theoretical+computer+science/book/978-3-540-77973-5)
 
 
-A sweet table
-=============
+Simple Features Model
+=====================
 
-Package                                               KLOC     Contributors      Stars
--------                                             ------   --------------    -------
-[matplotlib](http://matplotlib.org/)                    63              312       2313
-[Nose](http://readthedocs.org/docs/nose/en/latest/)      7               64        744
-[NumPy](http://www.numpy.org/)                          84              299       1804
-[Pandas](http://pandas.pydata.org)                     112              349       4115
-[SciPy](http://scipy.org/scipylib/)                     91              265       1528
-[SymPy](http://sympy.org/)                             223              340       1981
-Totals                                                 580             1369
+ - [An OGC specification](https://en.wikipedia.org/wiki/Simple_Features) for representing geometries
+ - Geometries bring their own edge cases:
 
-![](images/logos/numpy.png) {data-background="images/blank.png"}
-===========================
+    + WKT Example: `POLYGON((0 0, 10 10, 0 10, 10 0, 0 0))`
 
-  1. A numberd list with an image in the header
-
+![](images/self_int.png)
 
 Shapefile
 =========
 
-Open specification [whitepaper](XXX)
+ - Open specification, 1996 ([Whitepaper](http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf), [Wikipedia](http://en.wikipedia.org/wiki/Shapefile))
+ - Historically the langua-franca for exchanging vector data
+ - A collection of sidecar files (`.shp, .shx, .dbf`) plus some optional extras (`.prj`, `.sbn`, ...)
+ - Stores attribues in a DBF file, entity data in two parts:
+    * `.shp` contains the shapes themselves (in binary)
+    * `.shx` contains the index to look up shape locations in the `.shp`
 
-Resources
+Shapefile
+=========
+ - Pros: 
+    + fast, ubiquitous, file-based means easy streaming, includes an index (usually quadtree) for fast lookup
+ - Cons:
+    + Record offset is a `16-bit int`, so only 2GB files
+    + Only one *spatial type* per file
+    + The attribute model
+
+ - Remember: attribute model (our table) + entity data (the shapes) 
+ - Attributes are '[dBase](http://en.wikipedia.org/wiki/DBase)': the cutting edge format of 1988.
+    * limited column names
+    * spreadsheet software hates it
+
+Shapefile
 =========
 
-Closing {data-background="images/blank.png"}
+    # default output of OGR is a shapefile, no `-f format` needed
+    ogr2ogr locations.shp locations.vrt
+
+ - Knows about this 'projection' thing
+ - A variety of other traits that makes it great as a data storage format
+ - But it's domain specific, so no broader ecosystem
+
+ {data-background="images/shapefile.png"}
+=
+
+GeoJSON
 =======
+
+ - A community driven effort to create an agnostic JSON specification which can easily encode geometries (again, our attribute + entity model).
+ - [http://geojson.org](http://geojson.org)
+ - Spec created in 2008, but really has taken off in the past 3 years -- confluence of awesome.
+ - [Submitted to IETF](http://www.ietf.org/id/draft-butler-geojson-05.txt)
+ - `JSON` has a massive ecosystem! Spatial is always better when it bootstraps the existing technology ecosystem
+
+GeoJSON
+=======
+
+ - Our same entity + attribute model, but now with JSON!
+
+```json
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "name": "BU Bridge", "type": "bridge", "latitude": "42.353", "longitude": "-71.1106" }, "geometry": { "type": "Point", "coordinates": [ -71.1106, 42.353 ] } },
+{ "type": "Feature", "properties": { "name": "Prudential Tower", "type": "skyscraper", "latitude": "42.347", "longitude": "-71.082" }, "geometry": { "type": "Point", "coordinates": [ -71.082, 42.347 ] } },
+{ "type": "Feature", "properties": { "name": "That place where we measured 109in of snow", "type": "airport", "latitude": "42.3605", "longitude": "-71.006638" }, "geometry": { "type": "Point", "coordinates": [ -71.006638, 42.3605 ] } }
+]
+}
+```
+
+Non-Planar Datasets
+===================
+
+ - Shapefiles & GeoJSON are non-planar formats, a.k.a. spaghetti:
+
+![](images/osm_spaghetti.png)
+
+[Wikipedia; GDFL](http://commons.wikimedia.org/wiki/File:OSM_knooppunt_Birmingham_-_spaghetti_junction.png)
+
+- What you want in 98% of cases, but when you don't...
+
+ 
+Topological Datasets
+====================
+
+ - What's a topological dataset?
+ - [GIS.SE answer](http://gis.stackexchange.com/questions/178/simplifying-adjacent-polygons)
+ - Support in GRASS, PostGIS, ArcGIS (`E00`, parcel fabric) and now, with TopoJSON
+
+TopoJSON
+========
+
+ - Last Maptime, Andy gave us a great demo of D3 &mdash; [TopoJSON](https://en.wikipedia.org/wiki/GeoJSON#TopoJSON) also created by [Mike Bostock](http://bost.ocks.org/mike/) (plus our very own [Calvin Metcalf](http://calvinmetcalf.com/))
+ - I'm hoping Calvin is here to represent
+ - [The Spec](https://github.com/topojson/topojson-specification/blob/master/README.md)
+
+TopoJSON
+========
+
+ - Supports transforms and quantization
+ - Primarily intended as a *data visualization* format -- throws out data where it doesn't help make a good image at the scale of a D3 canvas.
+
+Files are no fun, what about databases?
+=======================================
+
+[PostGIS](http://postgis.net/), [GeoPackage](http://www.geopackage.org/) (SQLite), [SQL Server](https://msdn.microsoft.com/en-us/library/bb933790.aspx), [Esri Geodatabase](http://www.esri.com/products/arcgis-capabilities/data-management), ...
+ 
+- Everyone can take advantage of spatial data, so its becoming
+  a primative type in most database engines
+- Some engines (e.g. PostGIS, GDB) on more of the problem space
+
+Attributes + Entities == Magic!
+===============================
+
+Neat example
+============
+
+This stuff + computational geometry:
+
+[Wherewolf](https://source.opennews.org/en-US/articles/introducing-wherewolf/)
 
 Thanks
 ======

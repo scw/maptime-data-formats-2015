@@ -96,7 +96,7 @@ code > span.er { color: #c3bf9f; }
 <ul>
 <li>Work at <a href="https://www.esri.com">Esri</a> on GIS software for scientific applications</li>
 <li>Python and R</li>
-<li>Commercial software + FOSS == ???</li>
+<li>GIS company since 1969, makes things like ArcGIS</li>
 </ul>
 </section>
 <section id="ive-got-plenty-of-data-types-thanks" class="slide level1">
@@ -111,12 +111,12 @@ code > span.er { color: #c3bf9f; }
 <h1>Good Ol' CSV, Nothing Beats CSV</h1>
 <p>Comma Separated Values</p>
 <pre><code>name, type, latitude, longitude
-BU Bridge, bridge, 49.353, -71.1106
+BU Bridge, bridge, 42.353, -71.1106
 Prudential Tower, skyscraper, 42.347, -71.082
 &#39;That place where we measured 108.6&quot; of snow&#39;, airport, 42.3605, -71.006638</code></pre>
 <div class="fragment">
 <ul>
-<li>A simple tabular structure to store data -- spreadsheet, but without the cruft</li>
+<li>A simple tabular structure to store data — spreadsheet, without the cruft</li>
 <li>Can upload this data to web mapping sites, or use with something like <a href="https://www.gdal.org">GDAL</a> to convert it to other formats.</li>
 </ul>
 </div>
@@ -138,8 +138,12 @@ Prudential Tower, skyscraper, 42.347, -71.082
 <pre><code>cd data/
 # ogr2ogr is confusingly &lt;OUTPUT NAME&gt; &lt;INPUT NAME&gt;
 ogr2ogr -f &quot;GeoJSON&quot; locations.geojson locations.csv</code></pre>
-<p>...</p>
-<p>(World's tiniest trumpet) -- doesn't work. Why? This 'projection' thing. Which columns are our spatial data</p>
+</section>
+<section id="section-1" class="slide level1" data-background="images/bad-geojson.png">
+<h1></h1>
+<p style="color: black">
+<em>World's tiniest trumpet</em> — doesn't work. Why? GDAL wants to know: Which columns are our spatial data? How are they registered to the surface of the earth?
+</p>
 </section>
 <section id="convert-our-csv-1" class="slide level1">
 <h1>Convert Our CSV</h1>
@@ -151,84 +155,185 @@ ogr2ogr -f &quot;GeoJSON&quot; locations.geojson locations.csv</code></pre>
         <span class="kw">&lt;GeometryField</span><span class="ot"> encoding=</span><span class="st">&quot;PointFromColumns&quot;</span><span class="ot"> x=</span><span class="st">&quot;longitude&quot;</span><span class="ot"> y=</span><span class="st">&quot;latitude&quot;</span><span class="kw">/&gt;</span>
     <span class="kw">&lt;/OGRVRTLayer&gt;</span>
 <span class="kw">&lt;/OGRVRTDataSource&gt;</span></code></pre>
+<div class="fragment">
+<p>Let's try that again:</p>
+<pre><code>ogr2ogr -f &quot;GeoJSON&quot; locations.geojson locations.csv</code></pre>
+<p><a href="https://github.com/scw/maptime-data-formats-2015/blob/master/data/locations.geojson">Results</a></p>
+</div>
 </section>
-<section id="what-to-know" class="slide level1">
-<h1>What to Know</h1>
-<p>Mapping is 'hard' but don't need to know all the details</p>
-<p><a href="http://gis.stackexchange.com/questions/6535/how-much-math-does-a-gis-analyst-need-to-know/6549#6549">How much math does a GIS analyst need to know?</a> - trigonometry - differential geometry - topology - calculus - numerical analysis - computer science - geometry - statistics</p>
+<section id="csv-to-geojson" class="slide level1">
+<h1>CSV to GeoJSON</h1>
+<p>Simpler ways:</p>
+<ul>
+<li><a href="http://togeojson.com/">CSV to GeoJSON</a></li>
+<li><a href="https://geojson.io">GeoJSON.io</a></li>
+</ul>
+<p>So what's all this XML? I thought we were just making a point?</p>
+<ul>
+<li>GDAL wants to know where to put the data (shh, <em>projections</em>)</li>
+<li>It also knows how to handle higher order data -- data that doesn't fit as well into our simple column model that works fine for points.</li>
+</ul>
 </section>
-<section id="a-sweet-table" class="slide level1">
-<h1>A sweet table</h1>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Package</th>
-<th style="text-align: right;">KLOC</th>
-<th style="text-align: right;">Contributors</th>
-<th style="text-align: right;">Stars</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="http://matplotlib.org/">matplotlib</a></td>
-<td style="text-align: right;">63</td>
-<td style="text-align: right;">312</td>
-<td style="text-align: right;">2313</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://readthedocs.org/docs/nose/en/latest/">Nose</a></td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">64</td>
-<td style="text-align: right;">744</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="http://www.numpy.org/">NumPy</a></td>
-<td style="text-align: right;">84</td>
-<td style="text-align: right;">299</td>
-<td style="text-align: right;">1804</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://pandas.pydata.org">Pandas</a></td>
-<td style="text-align: right;">112</td>
-<td style="text-align: right;">349</td>
-<td style="text-align: right;">4115</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="http://scipy.org/scipylib/">SciPy</a></td>
-<td style="text-align: right;">91</td>
-<td style="text-align: right;">265</td>
-<td style="text-align: right;">1528</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="http://sympy.org/">SymPy</a></td>
-<td style="text-align: right;">223</td>
-<td style="text-align: right;">340</td>
-<td style="text-align: right;">1981</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Totals</td>
-<td style="text-align: right;">580</td>
-<td style="text-align: right;">1369</td>
-<td style="text-align: right;"></td>
-</tr>
-</tbody>
-</table>
+<section id="spatial-data-formats" class="slide level1">
+<h1>Spatial Data Formats</h1>
+<p>Want data <em>formats</em> that let us store geometric information. We have an attribute model, like the CSV, but want an additional &quot;entity&quot; model to store the geographic information.</p>
+<ul>
+<li>0D: Point</li>
+<li>1D: Line</li>
+<li>2D: Area</li>
+<li>3D: Solid</li>
+<li>4D: Space-time</li>
+<li><a href="images/entity-models.png">With images</a></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Can't easily cram these into a tabular structure</li>
+<li>'Vector' data</li>
+</ul>
+</div>
 </section>
-<section id="section-1" class="slide level1" data-background="images/blank.png">
-<h1><img src="images/logos/numpy.png" /></h1>
-<ol type="1">
-<li>A numberd list with an image in the header</li>
-</ol>
+<section id="bigger-than-spatial" class="slide level1">
+<h1>Bigger Than Spatial</h1>
+<p><img src="images/db-query.jpg" style="border: none" /></p>
+<p>Source: <a href="http://www.springer.com/computer/theoretical+computer+science/book/978-3-540-77973-5">Computational Geometry: Algorithms and Applications</a></p>
+</section>
+<section id="simple-features-model" class="slide level1">
+<h1>Simple Features Model</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Simple_Features">An OGC specification</a> for representing geometries</li>
+<li><p>Geometries bring their own edge cases:</p>
+<ul>
+<li>WKT Example: <code>POLYGON((0 0, 10 10, 0 10, 10 0, 0 0))</code></li>
+</ul></li>
+</ul>
+<figure>
+<img src="images/self_int.png" />
+</figure>
 </section>
 <section id="shapefile" class="slide level1">
 <h1>Shapefile</h1>
-<p>Open specification <a href="XXX">whitepaper</a></p>
+<ul>
+<li>Open specification, 1996 (<a href="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">Whitepaper</a>, <a href="http://en.wikipedia.org/wiki/Shapefile">Wikipedia</a>)</li>
+<li>Historically the langua-franca for exchanging vector data</li>
+<li>A collection of sidecar files (<code>.shp, .shx, .dbf</code>) plus some optional extras (<code>.prj</code>, <code>.sbn</code>, ...)</li>
+<li>Stores attribues in a DBF file, entity data in two parts:
+<ul>
+<li><code>.shp</code> contains the shapes themselves (in binary)</li>
+<li><code>.shx</code> contains the index to look up shape locations in the <code>.shp</code></li>
+</ul></li>
+</ul>
 </section>
-<section id="resources" class="slide level1">
-<h1>Resources</h1>
+<section id="shapefile-1" class="slide level1">
+<h1>Shapefile</h1>
+<ul>
+<li>Pros:
+<ul>
+<li>fast, ubiquitous, file-based means easy streaming, includes an index (usually quadtree) for fast lookup</li>
+</ul></li>
+<li>Cons:
+<ul>
+<li>Record offset is a <code>16-bit int</code>, so only 2GB files</li>
+<li>Only one <em>spatial type</em> per file</li>
+<li>The attribute model</li>
+</ul></li>
+<li>Remember: attribute model (our table) + entity data (the shapes)</li>
+<li>Attributes are '<a href="http://en.wikipedia.org/wiki/DBase">dBase</a>': the cutting edge format of 1988.
+<ul>
+<li>limited column names</li>
+<li>spreadsheet software hates it</li>
+</ul></li>
+</ul>
 </section>
-<section id="closing" class="slide level1" data-background="images/blank.png">
-<h1>Closing</h1>
+<section id="shapefile-2" class="slide level1">
+<h1>Shapefile</h1>
+<pre><code># default output of OGR is a shapefile, no `-f format` needed
+ogr2ogr locations.shp locations.vrt</code></pre>
+<ul>
+<li>Knows about this 'projection' thing</li>
+<li>A variety of other traits that makes it great as a data storage format</li>
+<li>But it's domain specific, so no broader ecosystem</li>
+</ul>
+</section>
+<section id="section-2" class="slide level1" data-background="images/shapefile.png">
+<h1></h1>
+</section>
+<section id="geojson" class="slide level1">
+<h1>GeoJSON</h1>
+<ul>
+<li>A community driven effort to create an agnostic JSON specification which can easily encode geometries (again, our attribute + entity model).</li>
+<li><a href="http://geojson.org" class="uri">http://geojson.org</a></li>
+<li>Spec created in 2008, but really has taken off in the past 3 years -- confluence of awesome.</li>
+<li><a href="http://www.ietf.org/id/draft-butler-geojson-05.txt">Submitted to IETF</a></li>
+<li><code>JSON</code> has a massive ecosystem! Spatial is always better when it bootstraps the existing technology ecosystem</li>
+</ul>
+</section>
+<section id="geojson-1" class="slide level1">
+<h1>GeoJSON</h1>
+<ul>
+<li>Our same entity + attribute model, but now with JSON!</li>
+</ul>
+<pre class="sourceCode json"><code class="sourceCode json"><span class="fu">{</span>
+<span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;FeatureCollection&quot;</span><span class="fu">,</span>
+<span class="dt">&quot;crs&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;name&quot;</span><span class="fu">,</span> <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;urn:ogc:def:crs:OGC:1.3:CRS84&quot;</span> <span class="fu">}</span> <span class="fu">},</span>
+                                                                                
+<span class="dt">&quot;features&quot;</span><span class="fu">:</span> <span class="ot">[</span>
+<span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Feature&quot;</span><span class="fu">,</span> <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;BU Bridge&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;bridge&quot;</span><span class="fu">,</span> <span class="dt">&quot;latitude&quot;</span><span class="fu">:</span> <span class="st">&quot;42.353&quot;</span><span class="fu">,</span> <span class="dt">&quot;longitude&quot;</span><span class="fu">:</span> <span class="st">&quot;-71.1106&quot;</span> <span class="fu">},</span> <span class="dt">&quot;geometry&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Point&quot;</span><span class="fu">,</span> <span class="dt">&quot;coordinates&quot;</span><span class="fu">:</span> <span class="ot">[</span> <span class="fl">-71.1106</span><span class="ot">,</span> <span class="fl">42.353</span> <span class="ot">]</span> <span class="fu">}</span> <span class="fu">}</span><span class="ot">,</span>
+<span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Feature&quot;</span><span class="fu">,</span> <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Prudential Tower&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;skyscraper&quot;</span><span class="fu">,</span> <span class="dt">&quot;latitude&quot;</span><span class="fu">:</span> <span class="st">&quot;42.347&quot;</span><span class="fu">,</span> <span class="dt">&quot;longitude&quot;</span><span class="fu">:</span> <span class="st">&quot;-71.082&quot;</span> <span class="fu">},</span> <span class="dt">&quot;geometry&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Point&quot;</span><span class="fu">,</span> <span class="dt">&quot;coordinates&quot;</span><span class="fu">:</span> <span class="ot">[</span> <span class="fl">-71.082</span><span class="ot">,</span> <span class="fl">42.347</span> <span class="ot">]</span> <span class="fu">}</span> <span class="fu">}</span><span class="ot">,</span>
+<span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Feature&quot;</span><span class="fu">,</span> <span class="dt">&quot;properties&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;That place where we measured 109in of snow&quot;</span><span class="fu">,</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;airport&quot;</span><span class="fu">,</span> <span class="dt">&quot;latitude&quot;</span><span class="fu">:</span> <span class="st">&quot;42.3605&quot;</span><span class="fu">,</span> <span class="dt">&quot;longitude&quot;</span><span class="fu">:</span> <span class="st">&quot;-71.006638&quot;</span> <span class="fu">},</span> <span class="dt">&quot;geometry&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Point&quot;</span><span class="fu">,</span> <span class="dt">&quot;coordinates&quot;</span><span class="fu">:</span> <span class="ot">[</span> <span class="fl">-71.006638</span><span class="ot">,</span> <span class="fl">42.3605</span> <span class="ot">]</span> <span class="fu">}</span> <span class="fu">}</span>
+<span class="ot">]</span>
+<span class="fu">}</span></code></pre>
+</section>
+<section id="non-planar-datasets" class="slide level1">
+<h1>Non-Planar Datasets</h1>
+<ul>
+<li>Shapefiles &amp; GeoJSON are non-planar formats, a.k.a. spaghetti:</li>
+</ul>
+<figure>
+<img src="images/osm_spaghetti.png" />
+</figure>
+<p><a href="http://commons.wikimedia.org/wiki/File:OSM_knooppunt_Birmingham_-_spaghetti_junction.png">Wikipedia; GDFL</a></p>
+<ul>
+<li>What you want in 98% of cases, but when you don't...</li>
+</ul>
+</section>
+<section id="topological-datasets" class="slide level1">
+<h1>Topological Datasets</h1>
+<ul>
+<li>What's a topological dataset?</li>
+<li><a href="http://gis.stackexchange.com/questions/178/simplifying-adjacent-polygons">GIS.SE answer</a></li>
+<li>Support in GRASS, PostGIS, ArcGIS (<code>E00</code>, parcel fabric) and now, with TopoJSON</li>
+</ul>
+</section>
+<section id="topojson" class="slide level1">
+<h1>TopoJSON</h1>
+<ul>
+<li>Last Maptime, Andy gave us a great demo of D3 — <a href="https://en.wikipedia.org/wiki/GeoJSON#TopoJSON">TopoJSON</a> also created by <a href="http://bost.ocks.org/mike/">Mike Bostock</a> (plus our very own <a href="http://calvinmetcalf.com/">Calvin Metcalf</a>)</li>
+<li>I'm hoping Calvin is here to represent</li>
+<li><a href="https://github.com/topojson/topojson-specification/blob/master/README.md">The Spec</a></li>
+</ul>
+</section>
+<section id="topojson-1" class="slide level1">
+<h1>TopoJSON</h1>
+<ul>
+<li>Supports transforms and quantization</li>
+<li>Primarily intended as a <em>data visualization</em> format -- throws out data where it doesn't help make a good image at the scale of a D3 canvas.</li>
+</ul>
+</section>
+<section id="files-are-no-fun-what-about-databases" class="slide level1">
+<h1>Files are no fun, what about databases?</h1>
+<p><a href="http://postgis.net/">PostGIS</a>, <a href="http://www.geopackage.org/">GeoPackage</a> (SQLite), <a href="https://msdn.microsoft.com/en-us/library/bb933790.aspx">SQL Server</a>, <a href="http://www.esri.com/products/arcgis-capabilities/data-management">Esri Geodatabase</a>, ...</p>
+<ul>
+<li>Everyone can take advantage of spatial data, so its becoming a primative type in most database engines</li>
+<li>Some engines (e.g. PostGIS, GDB) on more of the problem space</li>
+</ul>
+</section>
+<section id="attributes-entities-magic" class="slide level1">
+<h1>Attributes + Entities == Magic!</h1>
+</section>
+<section id="neat-example" class="slide level1">
+<h1>Neat example</h1>
+<p>This stuff + computational geometry:</p>
+<p><a href="https://source.opennews.org/en-US/articles/introducing-wherewolf/">Wherewolf</a></p>
 </section>
 <section id="thanks" class="slide level1">
 <h1>Thanks</h1>
