@@ -65,11 +65,27 @@ Convert Our CSV
 ===============
     
     cd data/
-    ogr2ogr -f "GeoJSON" data/locations.geojson data/locations.csv
+    # ogr2ogr is confusingly <OUTPUT NAME> <INPUT NAME>
+    ogr2ogr -f "GeoJSON" locations.geojson locations.csv
 
 ...
 
-BOOM! We get real geospatial data!
+(World's tiniest trumpet) -- doesn't work. Why? This 'projection' thing. Which columns are our spatial data
+
+Convert Our CSV
+===============
+
+```xml
+<OGRVRTDataSource>
+    <OGRVRTLayer name="locations">
+        <SrcDataSource>locations.csv</SrcDataSource>
+        <GeometryType>wkbPoint</GeometryType>
+        <LayerSRS>WGS84</LayerSRS>
+        <GeometryField encoding="PointFromColumns" x="longitude" y="latitude"/>
+    </OGRVRTLayer>
+</OGRVRTDataSource>
+```
+ 
 
 What to Know
 ============

@@ -10,6 +10,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
   <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; background-color: #303030; color: #cccccc; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; }
+td.sourceCode { padding-left: 5px; }
+pre, code { color: #cccccc; background-color: #303030; }
+code > span.kw { color: #f0dfaf; }
+code > span.dt { color: #dfdfbf; }
+code > span.dv { color: #dcdccc; }
+code > span.bn { color: #dca3a3; }
+code > span.fl { color: #c0bed1; }
+code > span.ch { color: #dca3a3; }
+code > span.st { color: #cc9393; }
+code > span.co { color: #7f9f7f; }
+code > span.ot { color: #efef8f; }
+code > span.al { color: #ffcfaf; }
+code > span.fu { color: #efef8f; }
+code > span.er { color: #c3bf9f; }
+  </style>
   <link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
   <!-- If the query includes 'print-pdf', include the PDF print sheet -->
   <script>
@@ -93,7 +113,7 @@
 <pre><code>name, type, latitude, longitude
 BU Bridge, bridge, 49.353, -71.1106
 Prudential Tower, skyscraper, 42.347, -71.082
-That place where we measured 108.6&quot; of snow, airport, 42.3605, -71.006638</code></pre>
+&#39;That place where we measured 108.6&quot; of snow&#39;, airport, 42.3605, -71.006638</code></pre>
 <div class="fragment">
 <ul>
 <li>A simple tabular structure to store data -- spreadsheet, but without the cruft</li>
@@ -112,6 +132,25 @@ That place where we measured 108.6&quot; of snow, airport, 42.3605, -71.006638</
 <div class="fragment">
 <p>Everyone uses it, you should too!</p>
 </div>
+</section>
+<section id="convert-our-csv" class="slide level1">
+<h1>Convert Our CSV</h1>
+<pre><code>cd data/
+# ogr2ogr is confusingly &lt;OUTPUT NAME&gt; &lt;INPUT NAME&gt;
+ogr2ogr -f &quot;GeoJSON&quot; locations.geojson locations.csv</code></pre>
+<p>...</p>
+<p>(World's tiniest trumpet) -- doesn't work. Why? This 'projection' thing. Which columns are our spatial data</p>
+</section>
+<section id="convert-our-csv-1" class="slide level1">
+<h1>Convert Our CSV</h1>
+<pre class="sourceCode xml"><code class="sourceCode xml"><span class="kw">&lt;OGRVRTDataSource&gt;</span>
+    <span class="kw">&lt;OGRVRTLayer</span><span class="ot"> name=</span><span class="st">&quot;locations&quot;</span><span class="kw">&gt;</span>
+        <span class="kw">&lt;SrcDataSource&gt;</span>locations.csv<span class="kw">&lt;/SrcDataSource&gt;</span>
+        <span class="kw">&lt;GeometryType&gt;</span>wkbPoint<span class="kw">&lt;/GeometryType&gt;</span>
+        <span class="kw">&lt;LayerSRS&gt;</span>WGS84<span class="kw">&lt;/LayerSRS&gt;</span>
+        <span class="kw">&lt;GeometryField</span><span class="ot"> encoding=</span><span class="st">&quot;PointFromColumns&quot;</span><span class="ot"> x=</span><span class="st">&quot;longitude&quot;</span><span class="ot"> y=</span><span class="st">&quot;latitude&quot;</span><span class="kw">/&gt;</span>
+    <span class="kw">&lt;/OGRVRTLayer&gt;</span>
+<span class="kw">&lt;/OGRVRTDataSource&gt;</span></code></pre>
 </section>
 <section id="what-to-know" class="slide level1">
 <h1>What to Know</h1>
