@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Shaun Walbridge / @scw" />
+  <title>Spatial Data Formats</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css"/>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">
+  <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+  <script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'reveal.js/css/print/pdf.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+  <style type="text/css">
+      .reveal pre.sourceCode {
+          line-height: 1.5em;
+          font-size: 0.65em;
+      }
+  
+      .reveal a {
+          color: #78dcfd;
+      }
+  
+      .reveal h1 {
+          font-weight: bold;
+          font-size: 3.0em;
+      }
+  
+      .reveal h2.author {
+          text-align: left;
+      }
+      .reveal h1.title {
+          text-align: left;
+          font-size: 2.7em;
+      } 
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Spatial Data Formats</h1>
+    <h2 class="author"><small><a href="http://shaunwalbridge.com">Shaun Walbridge</a> / <a href="https://twitter.com/scw"><span class="citation" data-cites="scw">@scw</span></a></small></h2>
+    <h3 class="date"><small><a href="https://twitter.com/MaptimeBoston">MaptimeBOS</a> — 2015-03-18</small></h3>
+</section>
+
+<section id="download-the-repo" class="slide level1">
+<h1>Download the repo</h1>
+<h3>
+<a href="https://github.com/scw/maptime-data-formats-2015">https://github.com/scw/maptime-data-formats-2015/</a>
+</h3>
+</section>
+<section id="section" class="slide level1" data-background="images/halpern-2008.png">
+<h1></h1>
+</section>
+<section id="impacts-of-shipping" class="slide level1">
+<h1>Impacts of Shipping</h1>
+<p><img src="images/cargo-vessels-thesis.png" style="border: none" /></p>
+</section>
+<section id="job" class="slide level1">
+<h1>Job</h1>
+<ul>
+<li>Work at <a href="https://www.esri.com">Esri</a> on GIS software for scientific applications</li>
+<li>Python and R</li>
+<li>Commercial software + FOSS == ???</li>
+</ul>
+</section>
+<section id="ive-got-plenty-of-data-types-thanks" class="slide level1">
+<h1>I've got plenty of data types, thanks</h1>
+<p>Many existing <a href="https://en.wikipedia.org/wiki/Data_type">data types</a>:</p>
+<p><code>float</code> - <code>int</code> - <code>char</code> - <code>string</code> - <code>timestamp</code></p>
+<div class="fragment">
+<p>Can't we just make it with these data types?</p>
+</div>
+</section>
+<section id="good-ol-csv-nothing-beats-csv" class="slide level1">
+<h1>Good Ol' CSV, Nothing Beats CSV</h1>
+<p>Comma Separated Values</p>
+<pre><code>name, type, latitude, longitude
+BU Bridge, bridge, 49.353, -71.1106
+Prudential Tower, skyscraper, 42.347, -71.082
+That place where we measured 108.6&quot; of snow, airport, 42.3605, -71.006638</code></pre>
+<div class="fragment">
+<ul>
+<li>A simple tabular structure to store data -- spreadsheet, but without the cruft</li>
+<li>Can upload this data to web mapping sites, or use with something like <a href="https://www.gdal.org">GDAL</a> to convert it to other formats.</li>
+</ul>
+</div>
+</section>
+<section id="gdal-interlude" class="slide level1">
+<h1>GDAL Interlude</h1>
+<p>GDAL: translate spatial data between formats.</p>
+<ul>
+<li>OS X: <code>brew install gdal</code></li>
+<li>Ubuntu/Debian: <code>apt-get install gdal</code></li>
+<li>Windows: <span style="text-decoration: line-through">You're SOL</span> try <a href="http://www.gisinternals.com/release.php">these binaries</a> or <a href="http://trac.osgeo.org/osgeo4w/">OSGeo4W</a>.</li>
+</ul>
+<div class="fragment">
+<p>Everyone uses it, you should too!</p>
+</div>
+</section>
+<section id="what-to-know" class="slide level1">
+<h1>What to Know</h1>
+<p>Mapping is 'hard' but don't need to know all the details</p>
+<p><a href="http://gis.stackexchange.com/questions/6535/how-much-math-does-a-gis-analyst-need-to-know/6549#6549">How much math does a GIS analyst need to know?</a> - trigonometry - differential geometry - topology - calculus - numerical analysis - computer science - geometry - statistics</p>
+</section>
+<section id="a-sweet-table" class="slide level1">
+<h1>A sweet table</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Package</th>
+<th style="text-align: right;">KLOC</th>
+<th style="text-align: right;">Contributors</th>
+<th style="text-align: right;">Stars</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><a href="http://matplotlib.org/">matplotlib</a></td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">312</td>
+<td style="text-align: right;">2313</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="http://readthedocs.org/docs/nose/en/latest/">Nose</a></td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">744</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="http://www.numpy.org/">NumPy</a></td>
+<td style="text-align: right;">84</td>
+<td style="text-align: right;">299</td>
+<td style="text-align: right;">1804</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="http://pandas.pydata.org">Pandas</a></td>
+<td style="text-align: right;">112</td>
+<td style="text-align: right;">349</td>
+<td style="text-align: right;">4115</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><a href="http://scipy.org/scipylib/">SciPy</a></td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">265</td>
+<td style="text-align: right;">1528</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><a href="http://sympy.org/">SymPy</a></td>
+<td style="text-align: right;">223</td>
+<td style="text-align: right;">340</td>
+<td style="text-align: right;">1981</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Totals</td>
+<td style="text-align: right;">580</td>
+<td style="text-align: right;">1369</td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="section-1" class="slide level1" data-background="images/blank.png">
+<h1><img src="images/logos/numpy.png" /></h1>
+<ol type="1">
+<li>A numberd list with an image in the header</li>
+</ol>
+</section>
+<section id="shapefile" class="slide level1">
+<h1>Shapefile</h1>
+<p>Open specification <a href="XXX">whitepaper</a></p>
+</section>
+<section id="resources" class="slide level1">
+<h1>Resources</h1>
+</section>
+<section id="closing" class="slide level1" data-background="images/blank.png">
+<h1>Closing</h1>
+</section>
+<section id="thanks" class="slide level1">
+<h1>Thanks</h1>
+<ul>
+<li>Maptime Boston</li>
+<li>CartoDB for the pizza</li>
+<li>Esri for paying me to nerd out on geospatial</li>
+</ul>
+</section>
+<section id="bonus-format-geojakeson" class="slide level1">
+<h1>BONUS FORMAT: GeoJakeSON</h1>
+<figure>
+<img src="images/geojakeson.png" />
+</figure>
+</section>
+    </div>
+  </div>
+
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: 'night', // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+    </body>
+</html>
