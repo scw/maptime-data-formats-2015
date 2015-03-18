@@ -2,8 +2,8 @@
 "type": "FeatureCollection",
                                                                                 
 "features": [
-{ "type": "Feature", "properties": { "name": "BU Bridge", "type": " bridge", "latitude": " 49.353", "longitude": " -71.1106" }, "geometry": null },
-{ "type": "Feature", "properties": { "name": "Prudential Tower", "type": " skyscraper", "latitude": " 42.347", "longitude": " -71.082" }, "geometry": null },
-{ "type": "Feature", "properties": { "name": "That place where we measured 108.6 of snow, airport, 42.3605, -71.006638", "type": null, "latitude": null, "longitude": null }, "geometry": null }
+{ "type": "Feature", "properties": { "name": "BU Bridge", "type": "bridge", "latitude": "49.353", "longitude": "-71.1106" }, "geometry": null },
+{ "type": "Feature", "properties": { "name": "Prudential Tower", "type": "skyscraper", "latitude": "42.347", "longitude": "-71.082" }, "geometry": null },
+{ "type": "Feature", "properties": { "name": "That place where we measured 109in of snow", "type": "airport", "latitude": "42.3605", "longitude": "-71.006638" }, "geometry": null }
 ]
 }
