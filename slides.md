@@ -260,6 +260,10 @@ This stuff + computational geometry:
 
 [Wherewolf](https://source.opennews.org/en-US/articles/introducing-wherewolf/)
 
+Koop: Expose Open Data as GeoJSON and Feature Services:
+
+[https://github.com/Esri/koop](https://github.com/Esri/koop)
+
 Thanks
 ======
 
