@@ -253,10 +253,10 @@ Files are no fun, what about databases?
 Attributes + Entities == Magic!
 ===============================
 
-Neat example
-============
+Neat examples
+=============
 
-This stuff + computational geometry:
+Data Formats + Computational Geometry:
 
 [Wherewolf](https://source.opennews.org/en-US/articles/introducing-wherewolf/)
 
